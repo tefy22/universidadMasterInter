@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Domain.Abstractions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,27 +19,23 @@ namespace Domain.ValueObjects
          */
         private const int MinLength = 8;
         private const int MaxLength = 20;
-        private const string Pattern = @"/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/";
+        private const string Pattern = @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,20}$";
         public string Value { get; private set; }
         private Password(string value) => Value = value;
 
         [GeneratedRegex(Pattern)]
         private static partial Regex PasswordRegex();
-        public static Password Create(string value)
+        public static Result<Password> Create(string value)
         {
-            /*
             if (string.IsNullOrWhiteSpace(value))
-                throw new ArgumentException("Password cannot be empty.");
-            
-            if (value.Length < MinLength)
-                throw new ArgumentException($"Password must be at least {MinLength} characters long.");
-            falta evaluar que sea mayor a 20 caracteres
+                return Result.Failure<Password>(ObjectsValueErrors.PasswordEmpty);
+
+            if (value.Length < MinLength || value.Length > MaxLength)
+                return Result.Failure<Password>(ObjectsValueErrors.PasswordLength);
+
             if (!PasswordRegex().IsMatch(value))
-                throw new ArgumentException("Password must contain at least one uppercase letter, one lowercase letter, and one number.");
-            */
-            if (string.IsNullOrWhiteSpace(value) || value.Length < MinLength || value.Length > MaxLength
-                || !PasswordRegex().IsMatch(value))
-                return null;
+                return Result.Failure<Password>(ObjectsValueErrors.PasswordCharacter);
+
             return new Password(value);
         }
     }

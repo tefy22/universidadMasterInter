@@ -11,6 +11,11 @@ namespace Domain.Abstractions
         private readonly List<IDomainEvents> _domainEvents = new();
         public Guid Id { get; init; }
 
+        protected Entity()
+        {
+            
+        }
+
         protected Entity(Guid id)
         {
             Id = id;
