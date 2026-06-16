@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Domain.Abstractions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,17 +17,14 @@ namespace Domain.ValueObjects
         [GeneratedRegex(Pattern)]
         private static partial Regex EmailRegex();
 
-        public static Email Create(string value)
+        public static Result<Email> Create(string value)
         {
-            /*
             if (string.IsNullOrWhiteSpace(value))
-                throw new ArgumentException("Email cannot be empty.");
-            
+                return Result.Failure<Email>(ObjectsValueErrors.EmailEmpty);
+
             if (!EmailRegex().IsMatch(value))
-                throw new ArgumentException("Invalid email format.");
-            */
-            if (string.IsNullOrWhiteSpace(value) || !EmailRegex().IsMatch(value))
-                return null;
+                return Result.Failure<Email>(ObjectsValueErrors.EmailInvalid);
+
             return new Email(value);
         }
 

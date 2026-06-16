@@ -10,6 +10,7 @@ namespace Domain.Students
 {
     public sealed class Student : Entity
     {
+        public DNI DNId { get; private set; }
         public Name Name { get; private set; }
         public LastName LastName { get; private set; }
         public Email Email { get; private set; }
@@ -19,10 +20,16 @@ namespace Domain.Students
         public StatusDetails Status { get; private set; } = StatusDetails.Active;
         public DateTime? CreatedAt { get; private set; }
 
-        private Student(Guid id, Name name, LastName lastname, Email email,
+        private Student()
+        {
+            
+        }
+
+        private Student(Guid id, DNI dni, Name name, LastName lastname, Email email,
             PhoneNumber phoneNumber, Password password, Guid idRol, 
             StatusDetails status) : base(id)
         {
+            DNId = dni;
             Name = name;
             LastName = lastname;
             Email = email;
@@ -33,23 +40,12 @@ namespace Domain.Students
             CreatedAt = DateTime.Now;
         }
 
-        /// <summary>
-        /// creacion del estudiante, se genera un nuevo id para el estudiante y se asigna la fecha de creacion
-        /// </summary>
-        /// <param name="name"></param>
-        /// <param name="lastname"></param>
-        /// <param name="email"></param>
-        /// <param name="phoneNumber"></param>
-        /// <param name="password"></param>
-        /// <param name="idRol"></param>
-        /// <param name="status"></param>
-        /// <returns></returns>
-        public static Student Create(
-            Name name, LastName lastname, Email email, PhoneNumber phoneNumber,
-            Password password, Guid idRol, StatusDetails status)
+        
+        public static Result<Student> Create(DNI dni, Name name, LastName lastname, Email email, PhoneNumber phoneNumber,
+            Password password, Guid idRol)
         {
-            return new Student(Guid.NewGuid(), name, lastname, email, 
-                phoneNumber, password, idRol, status);            
+            return new Student(Guid.NewGuid(), dni, name, lastname, email, 
+                phoneNumber, password, idRol, StatusDetails.Active);            
         }
 
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Domain.Abstractions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,23 +18,16 @@ namespace Domain.ValueObjects
         [GeneratedRegex(Pattern)]
         private static partial Regex PhoneNumberRegex();
 
-        public static PhoneNumber Create(string value)
+        public static Result<PhoneNumber> Create(string value)
         {
-            /*
             if (string.IsNullOrWhiteSpace(value))
-                throw new ArgumentException("Phone number cannot be empty.");
-            
-            if (value.Length != MaxLength)
-                throw new ArgumentException($"Phone number must be {MaxLength} digits long.");
-            
-            if (!PhoneNumberRegex().IsMatch(value))
-                throw new ArgumentException("Phone number must start with '3' and contain only digits.");
-            
-            */
+                return Result.Failure<PhoneNumber>(ObjectsValueErrors.PhoneNumbersEmpty);
 
-            if (string.IsNullOrWhiteSpace(value) || value.Length != MaxLength
-                || !PhoneNumberRegex().IsMatch(value))
-                return null;
+            if (value.Length != MaxLength)
+                return Result.Failure<PhoneNumber>(ObjectsValueErrors.PhoneNumbersLength);
+
+            if (!PhoneNumberRegex().IsMatch(value))
+                return Result.Failure<PhoneNumber>(ObjectsValueErrors.PhoneNumbersStart);
 
             return new PhoneNumber(value);
         }
