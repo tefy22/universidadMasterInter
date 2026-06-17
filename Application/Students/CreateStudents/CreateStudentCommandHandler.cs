@@ -50,13 +50,13 @@ namespace Application.Students.CreateStudents
             if (passwordResult.IsFailure)
                 return Result.Failure<Guid>(passwordResult.Error);
 
-            //var userDNI = _studentRepository.GetByDniAsync(idResult.Value.Value);
-            //if (userDNI != null)
-            //    return Result.Failure<Guid>(StudentErrors.ExistsDni);
+            var userDNI = _studentRepository.GetByDniAsync(idResult.Value.Value);
+            if (userDNI != null)
+                return Result.Failure<Guid>(StudentErrors.ExistsDni);
 
-            //var userEmail = _studentRepository.GetByEmailAsync(emailResult.Value.Value);
-            //if (userEmail != null)
-            //    return Result.Failure<Guid>(StudentErrors.ExistsEmail);
+            var userEmail = _studentRepository.GetByEmailAsync(emailResult.Value.Value);
+            if (userEmail != null)
+                return Result.Failure<Guid>(StudentErrors.ExistsEmail);
 
             try
             {
@@ -76,7 +76,7 @@ namespace Application.Students.CreateStudents
                 var student = studentResult.Value;
 
                 _studentRepository.Add(student);
-                var a = await _unitOfWork.SaveChangesAsync(cancellationToken);
+                await _unitOfWork.SaveChangesAsync(cancellationToken);
 
                 return Result.Success(student.Id);
             }

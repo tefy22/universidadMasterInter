@@ -20,7 +20,7 @@ namespace Domain.Roles
         {
             Description = description;
         }
-        public static Rol Create(RolesDetails description)
+        public static Result<Rol> Create(RolesDetails description)
         {
             return new Rol(Guid.NewGuid(), description);
         }
