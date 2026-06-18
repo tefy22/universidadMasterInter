@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Domain.Abstractions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,8 +13,8 @@ namespace Domain.Roles
         Task<IReadOnlyList<Rol>> GetAllAsync(CancellationToken cancellationToken = default);
         Task<Rol?> GetByNameAsync(string name, CancellationToken cancellationToken = default);
         void Add(Rol rol);
-        bool Update(Rol rol);
-        bool Delete(Guid id);
+        Task<Result> Update(Rol rol);
+        Task<Result> Delete(Guid id);
 
     }
 }

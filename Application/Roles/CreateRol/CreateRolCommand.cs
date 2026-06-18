@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Rol
+namespace Application.Roles.CreateRol
 {
-    public record RolCreateCommand(int id, string Description) : ICommand<Guid>;
+    public record CreateRolCommand(string Description) : ICommand<Guid>;
 }

@@ -7,38 +7,38 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Rol
+namespace Application.Roles.CreateRol
 {
-    internal sealed class RolCreateCommandHanlder : ICommandHandler<RolCreateCommand, Guid>
+    internal sealed class CreateRolCommandHanlder : ICommandHandler<CreateRolCommand, Guid>
     {
         private readonly IRolRepository _rolRepository;
         private readonly IUnitOfWork _unitOfWork;
 
-        public RolCreateCommandHanlder(IRolRepository rolRepository, IUnitOfWork unitOfWork)
+        public CreateRolCommandHanlder(IRolRepository rolRepository, IUnitOfWork unitOfWork)
         {
             _rolRepository = rolRepository;
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<Result<Guid>> Handle(RolCreateCommand request, CancellationToken cancellationToken)
+        public async Task<Result<Guid>> Handle(CreateRolCommand request, CancellationToken cancellationToken)
         {
             try
             {
                 if (request is null)
-                    return Result<Guid>.Failure<Guid>(Error.NullValue);
+                    return Result.Failure<Guid>(Error.NullValue);
 
                 // Validar y convertir la descripción a enum RolesDetails
                 if (!Enum.TryParse<RolesDetails>(request.Description, ignoreCase: true, out var descriptionEnum))
-                    return Result<Guid>.Failure<Guid>(RolErrors.InvalidDescription);                
+                    return Result.Failure<Guid>(RolErrors.InvalidDescription);                
 
                 // Verificar existencia por nombre (evitar duplicados)
                 var exists = await _rolRepository.GetByNameAsync(descriptionEnum.ToString(), cancellationToken);
                 if (exists is not null)
-                    return Result<Guid>.Failure<Guid>(RolErrors.Exists);
+                    return Result.Failure<Guid>(RolErrors.Exists);
                 
-                var rolResult = Domain.Roles.Rol.Create(descriptionEnum);
+                var rolResult = Rol.Create(descriptionEnum);
                 if (!rolResult.IsSuccess)
-                    return Result<Guid>.Failure<Guid>(rolResult.Error);
+                    return Result.Failure<Guid>(rolResult.Error);
                 
 
                 var rol = rolResult.Value;
@@ -47,11 +47,11 @@ namespace Application.Rol
 
                 await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-                return Result<Guid>.Success(rol.Id);
+                return Result.Success(rol.Id);
             }
             catch (Exception ex)
             {
-                return Result<Guid>.Failure<Guid>(RolErrors.CreateError);
+                return Result.Failure<Guid>(RolErrors.CreateError);
             }
         }
     }

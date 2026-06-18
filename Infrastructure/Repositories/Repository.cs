@@ -20,6 +20,7 @@ namespace Infrastructure.Repositories
         {
             return await _dbContext.Set<T>().FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
         }
+
         public void Add(T entity)
         {
             _dbContext.Add(entity);
