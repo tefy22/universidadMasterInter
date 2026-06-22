@@ -46,28 +46,10 @@ namespace Infrastructure.Configurations
                 .IsRequired()
                 .HasMaxLength(10);
 
-            builder.Property(u => u.Password)
-                .HasConversion(e => e.Value, v => Password.Create(v).Value)
-                .IsRequired()
-                .HasMaxLength(500);
-
-            builder.Property(x => x.RolId)
-                .HasColumnName("RolId")
-                .IsRequired();
-           
-            builder.Property(x => x.Status)
-                   .HasConversion<int>() // guarda como int en la BD
-                   .HasDefaultValue(StatusDetails.Active)
-                   .IsRequired();
-
             builder.Property(x => x.CreatedAt)
                 .HasColumnType("datetime2")
                 .IsRequired();
 
-            builder.HasOne<Rol>()
-                .WithMany()
-                .HasForeignKey(x => x.RolId)
-                .OnDelete(DeleteBehavior.NoAction);
 
             //builder.Property<uint>("Version").IsRowVersion();
         }

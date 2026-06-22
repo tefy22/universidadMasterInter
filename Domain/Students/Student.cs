@@ -14,10 +14,7 @@ namespace Domain.Students
         public Name Name { get; private set; }
         public LastName LastName { get; private set; }
         public Email Email { get; private set; }
-        public PhoneNumber PhoneNumber { get; private set; }
-        public Password Password { get; private set; }
-        public Guid RolId { get; private set; }
-        public StatusDetails Status { get; private set; } = StatusDetails.Active;
+        public PhoneNumber PhoneNumber { get; private set; }              
         public DateTime? CreatedAt { get; private set; }
 
         private Student()
@@ -26,26 +23,20 @@ namespace Domain.Students
         }
 
         private Student(Guid id, DNI dni, Name name, LastName lastname, Email email,
-            PhoneNumber phoneNumber, Password password, Guid idRol, 
-            StatusDetails status) : base(id)
+            PhoneNumber phoneNumber) : base(id)
         {
             DNId = dni;
             Name = name;
             LastName = lastname;
             Email = email;
-            Password = password;
             PhoneNumber = phoneNumber;
-            RolId = idRol;
-            Status = status;
             CreatedAt = DateTime.Now;
         }
 
         
-        public static Result<Student> Create(DNI dni, Name name, LastName lastname, Email email, PhoneNumber phoneNumber,
-            Password password, Guid idRol)
+        public static Result<Student> Create(DNI dni, Name name, LastName lastname, Email email, PhoneNumber phoneNumber)
         {
-            return new Student(Guid.NewGuid(), dni, name, lastname, email, 
-                phoneNumber, password, idRol, StatusDetails.Active);            
+            return new Student(Guid.NewGuid(), dni, name, lastname, email, phoneNumber);            
         }
 
 

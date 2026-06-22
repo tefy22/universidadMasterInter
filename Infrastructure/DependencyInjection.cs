@@ -24,7 +24,6 @@ namespace Infrastructure
                 op.UseSqlServer(connectionString).UseSnakeCaseNamingConvention();
             });
 
-            services.AddScoped<IStudentRepository, StudentRepository>();
             services.AddScoped<IRolRepository, RolRepository>();
 
             services.AddScoped<IUnitOfWork>(sp => sp.GetRequiredService<ApplicationDbContext>());

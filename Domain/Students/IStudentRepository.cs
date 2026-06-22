@@ -1,4 +1,5 @@
-﻿using Domain.Roles;
+﻿using Domain.Abstractions;
+using Domain.Roles;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,13 +10,13 @@ namespace Domain.Students
 {
     public interface IStudentRepository
     {
-        Task<Student?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
-        Task<Student?> GetByDniAsync(int dni, CancellationToken cancellationToken = default);
-        Task<Student?> GetByEmailAsync(string email, CancellationToken cancellationToken = default);
-        Task<IReadOnlyList<Student>> GetAllAsync(CancellationToken cancellationToken = default);
+        Task<StudentDto?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
+        Task<StudentDto?> GetByDniAsync(int dni, CancellationToken cancellationToken = default);
+        Task<StudentDto?> GetByEmailAsync(string email, CancellationToken cancellationToken = default);
+        Task<IReadOnlyList<StudentDto>> GetAllAsync(CancellationToken cancellationToken = default);
         void Add(Student student);
-        bool Update(Student student);
-        bool Delete(Guid id);
+        Task<Result> Update(StudentDto student);
+        Task<Result> Delete(Guid id);
 
     }
 }
