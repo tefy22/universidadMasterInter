@@ -54,7 +54,9 @@ namespace UniversityMaster.Controllers
                 return BadRequest(result.Error);
 
             //return CreatedAtAction(nameof(SearchRoles), new { id = result.Value }, result.Value);
-            return CreatedAtRoute("GetRoleById", new { id = result.Value }, result.Value);
+            //return CreatedAtRoute("GetRoleById", new { id = result.Value }, result.Value);
+
+            return CreatedAtRoute("GetRoleById", new { id = result.Value }, Result.Success(result.Value));
         }
 
         [HttpDelete("{id:guid}")]
