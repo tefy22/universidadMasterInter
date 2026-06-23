@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260616002443_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20260623224704_initial2")]
+    partial class initial2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -79,33 +79,11 @@ namespace Infrastructure.Migrations
                         .HasColumnType("nvarchar(200)")
                         .HasColumnName("name");
 
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)")
-                        .HasColumnName("password");
-
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
                         .HasMaxLength(10)
                         .HasColumnType("nvarchar(10)")
                         .HasColumnName("phone_number");
-
-                    b.Property<Guid>("RolId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("RolId");
-
-                    b.Property<int>("Status")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(1)
-                        .HasColumnName("status");
-
-                    b.Property<long>("Version")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("bigint")
-                        .HasColumnName("version");
 
                     b.HasKey("Id")
                         .HasName("pk_student");
@@ -117,20 +95,7 @@ namespace Infrastructure.Migrations
                         .IsUnique()
                         .HasDatabaseName("ix_student_email");
 
-                    b.HasIndex("RolId")
-                        .HasDatabaseName("ix_student_rol_id");
-
                     b.ToTable("Student", (string)null);
-                });
-
-            modelBuilder.Entity("Domain.Students.Student", b =>
-                {
-                    b.HasOne("Domain.Roles.Rol", null)
-                        .WithMany()
-                        .HasForeignKey("RolId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired()
-                        .HasConstraintName("fk_student_rol_rol_id");
                 });
 #pragma warning restore 612, 618
         }

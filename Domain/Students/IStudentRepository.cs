@@ -10,12 +10,12 @@ namespace Domain.Students
 {
     public interface IStudentRepository
     {
-        Task<StudentDto?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
-        Task<StudentDto?> GetByDniAsync(int dni, CancellationToken cancellationToken = default);
-        Task<StudentDto?> GetByEmailAsync(string email, CancellationToken cancellationToken = default);
-        Task<IReadOnlyList<StudentDto>> GetAllAsync(CancellationToken cancellationToken = default);
+        Task<Student?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
+        Task<Student?> GetByDniAsync(int dni, CancellationToken cancellationToken = default);
+        Task<Student?> GetByEmailAsync(string email, CancellationToken cancellationToken = default);
+        Task<IReadOnlyList<Student>> GetAllAsync(CancellationToken cancellationToken = default);
         void Add(Student student);
-        Task<Result> Update(StudentDto student);
+        Task<Result> Update(Student student);
         Task<Result> Delete(Guid id);
 
     }

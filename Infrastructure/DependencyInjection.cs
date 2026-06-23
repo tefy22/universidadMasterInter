@@ -25,6 +25,7 @@ namespace Infrastructure
             });
 
             services.AddScoped<IRolRepository, RolRepository>();
+            services.AddScoped<IStudentRepository, StudentRepository>();
 
             services.AddScoped<IUnitOfWork>(sp => sp.GetRequiredService<ApplicationDbContext>());
 

@@ -9,6 +9,7 @@ namespace Domain.Students
 {
     public static class StudentErrors
     {
+        public static Error Empty = new Error("Student.Empty", "El estudiante con el Id especificado no puede ser vacio");
         public static Error NotFound = new Error("Student.NotFound","El estudiante con el Id especificado no fue encontrado");
         public static Error ExistsDni = new Error("Student.Exists", "El estudiante con la identificacion especificada ya existe");
         public static Error ExistsEmail = new Error("Student.Email", "El estudiante con el email especificado ya existe");

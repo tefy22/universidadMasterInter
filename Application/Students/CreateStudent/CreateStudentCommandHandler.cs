@@ -33,9 +33,28 @@ namespace Application.Students.CreateStudent
                 var email = Email.Create(request.email);
                 var phoneNumber = PhoneNumber.Create(request.phoneNumber);
 
-                //FALTAN LAS DEMAS VALIDAICONES
+                if(dni.IsFailure)
+                    return Result.Failure<Guid>(dni.Error);
+
+                if (name.IsFailure)
+                    return Result.Failure<Guid>(name.Error);
+
+                if (lastname.IsFailure)
+                    return Result.Failure<Guid>(lastname.Error);
+
+                if (email.IsFailure)
+                    return Result.Failure<Guid>(email.Error);
+
                 if (phoneNumber.IsFailure)
                     return Result.Failure<Guid>(phoneNumber.Error);
+
+                var existDni = await _studentRepository.GetByDniAsync(dni.Value.Value, cancellationToken);
+                if (existDni is not null)
+                    return Result.Failure<Guid>(StudentErrors.ExistsDni);
+
+                var existEmail = await _studentRepository.GetByEmailAsync(email.Value.Value, cancellationToken);
+                if (existEmail is not null)
+                    return Result.Failure<Guid>(StudentErrors.ExistsEmail);
 
                 var studentResult = Student.Create(dni.Value, name.Value, lastname.Value, email.Value, phoneNumber.Value);
 

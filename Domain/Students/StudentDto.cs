@@ -6,5 +6,5 @@ using System.Threading.Tasks;
 
 namespace Domain.Students
 {
-    public record StudentDto(Guid id, int dni, string name, string lastname, string phoneNumber);
+    public record StudentDto(Guid id, int dni, string name, string lastname, string email, string phoneNumber);
 }
