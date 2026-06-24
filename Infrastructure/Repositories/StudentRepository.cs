@@ -1,5 +1,6 @@
 ﻿using Domain.Abstractions;
 using Domain.Students;
+using Domain.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -46,12 +47,28 @@ namespace Infrastructure.Repositories
 
         public async Task<Student?> GetByDniAsync(int dni, CancellationToken cancellationToken = default)
         {
-            return await _dbContext.Set<Student>().FirstOrDefaultAsync(s => s.DNId.Value == dni, cancellationToken);
+            //Validamos y creamos el Value Object usando tu método de dominio
+            var dniResult = DNI.Create(dni);
+
+            if (dniResult.IsFailure)
+                return null;
+
+            DNI dniObjeto = dniResult.Value;
+
+            //Comparamos Objeto 'DNI' contra Objeto 'DNI' EF Core lo traduce a SQL.
+            return await _dbContext.Set<Student>().FirstOrDefaultAsync(s => s.DNId == dniObjeto, cancellationToken);        
         }
 
         public async Task<Student?> GetByEmailAsync(string email, CancellationToken cancellationToken = default)
         {
-            return await _dbContext.Set<Student>().FirstOrDefaultAsync(s => EF.Property<string>(s, nameof(Student.Email)) == email, cancellationToken);
+            var emailResult = Email.Create(email);
+
+            if (emailResult.IsFailure)
+                return null;
+
+            var emailObjeto = emailResult.Value;
+
+            return await _dbContext.Set<Student>().FirstOrDefaultAsync(s => s.Email == emailObjeto , cancellationToken);
         }
 
         public async Task<Result> Update(Student student)

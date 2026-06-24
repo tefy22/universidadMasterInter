@@ -29,7 +29,7 @@ namespace UniversityMaster.Controllers
             return Ok(response);
         }
 
-        [HttpGet("{id}", Name = "GetStudentsById")]
+        [HttpGet("{id:guid}", Name = "GetStudentsById")]
         public async Task<IActionResult> SearchById(Guid id, CancellationToken cancellationToken = default)
         {
             var command = new SearchByIdStudentQuery(id);
@@ -41,6 +41,27 @@ namespace UniversityMaster.Controllers
             return Ok(Result.Success(result.Value));
         }
 
+        [HttpGet("{dni:int}", Name = "GetStudentByDni")]
+        public async Task<IActionResult> SearchByDni(int dni, CancellationToken cancellationToken = default)
+        {
+            var command = new SearchByDniStudentQuery(dni);
+            var result = await _sender.Send(command, cancellationToken);
+            if(result.IsFailure)
+                return BadRequest(result.Error);
+            return Ok(Result.Success(result.Value));
+        }
+
+        [HttpGet("{email}", Name = "GetStudentByEmail")]
+        public async Task<IActionResult> SearchByEmail(string email, CancellationToken cancellationToken = default)
+        {
+            var command = new SearchByEmailStudentQuery(email);
+            var result = await _sender.Send(command, cancellationToken);
+
+            if(result.IsFailure)
+                return BadRequest(result.Error);
+
+            return Ok(Result.Success(result.Value));
+        }
 
         [HttpPost]
         public async Task<IActionResult> CreateStudents([FromBody] CreateStudentCommand command, CancellationToken cancellationToken = default)
