@@ -13,6 +13,7 @@ namespace Domain.Students
         Task<Student?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
         Task<Student?> GetByDniAsync(int dni, CancellationToken cancellationToken = default);
         Task<Student?> GetByEmailAsync(string email, CancellationToken cancellationToken = default);
+        Task<Student?> GetByEmailByIdAsync(Guid id, string email, CancellationToken cancellationToken = default);
         Task<IReadOnlyList<Student>> GetAllAsync(CancellationToken cancellationToken = default);
         void Add(Student student);
         Task<Result> Update(Student student);

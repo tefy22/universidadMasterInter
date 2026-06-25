@@ -25,18 +25,18 @@ namespace Infrastructure.Repositories
 
             try
             {
-                var studentExist = GetByIdAsync(id, CancellationToken.None).GetAwaiter().GetResult();
+                var studentExist = await _dbContext.Set<Student>().FirstOrDefaultAsync(s => s.Id == id);
                 if (studentExist is null)
                     return Result.Failure(StudentErrors.NotFound);
 
                 _dbContext.Set<Student>().Remove(studentExist);
+                await _dbContext.SaveChangesAsync();
                 return Result.Success();
 
             }
             catch (Exception)
             {
-
-                throw;
+                return Result.Failure(StudentErrors.DeleteError);
             }
         }
 
@@ -71,15 +71,36 @@ namespace Infrastructure.Repositories
             return await _dbContext.Set<Student>().FirstOrDefaultAsync(s => s.Email == emailObjeto , cancellationToken);
         }
 
+        public async Task<Student?> GetByEmailByIdAsync(Guid id, string email, CancellationToken cancellationToken = default)
+        {
+            var emailResult = Email.Create(email);
+
+            if (emailResult.IsFailure)
+                return null;
+
+            var emailObjeto = emailResult.Value;
+
+            return await _dbContext.Set<Student>().FirstOrDefaultAsync(s => s.Email == emailObjeto && s.Id != id, cancellationToken);
+        }
+
         public async Task<Result> Update(Student student)
         {
             try
             {
-                var exist =  await _dbContext.Set<Student>().FirstOrDefaultAsync(r => r.Id == student.Id);
+                var exist = await _dbContext.Set<Student>().FirstOrDefaultAsync(s => s.Id == student.Id);
                 if (exist is null)
                     return Result.Failure(StudentErrors.NotFound);
 
                 _dbContext.Entry(exist).CurrentValues.SetValues(student);
+                return Result.Success();
+
+
+                var studentExist = await _dbContext.Set<Student>().FirstOrDefaultAsync(s => s.Id == id);
+                if (studentExist is null)
+                    return Result.Failure(StudentErrors.NotFound);
+
+                _dbContext.Set<Student>().Remove(studentExist);
+                await _dbContext.SaveChangesAsync();
                 return Result.Success();
             }
             catch (Exception)
