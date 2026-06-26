@@ -61,7 +61,7 @@ namespace Application.Students.UpdateStudent
                 var dniExits  =DNI.Create(exist.DNId.Value);
                 var emailExits = Email.Create(exist.Email.Value);
 
-                var studentResult = Student.Create(dniExits.Value, name.Value, lastname.Value, emailExits.Value, phoneNumber.Value);
+                var studentResult = Student.Update(request.id, dniExits.Value, name.Value, lastname.Value, emailExits.Value, phoneNumber.Value);
 
                 if (studentResult.IsFailure)
                     return Result.Failure<Guid>(studentResult.Error);

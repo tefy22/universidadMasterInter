@@ -88,20 +88,14 @@ namespace Infrastructure.Repositories
             try
             {
                 var exist = await _dbContext.Set<Student>().FirstOrDefaultAsync(s => s.Id == student.Id);
+
                 if (exist is null)
                     return Result.Failure(StudentErrors.NotFound);
 
                 _dbContext.Entry(exist).CurrentValues.SetValues(student);
-                return Result.Success();
-
-
-                var studentExist = await _dbContext.Set<Student>().FirstOrDefaultAsync(s => s.Id == id);
-                if (studentExist is null)
-                    return Result.Failure(StudentErrors.NotFound);
-
-                _dbContext.Set<Student>().Remove(studentExist);
                 await _dbContext.SaveChangesAsync();
                 return Result.Success();
+
             }
             catch (Exception)
             {

@@ -3,6 +3,7 @@ using Domain.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -39,6 +40,10 @@ namespace Domain.Students
             return new Student(Guid.NewGuid(), dni, name, lastname, email, phoneNumber);            
         }
 
+        public static Result<Student> Update(Guid id, DNI dni, Name name, LastName lastname, Email email, PhoneNumber phoneNumber)
+        {
+            return new Student(id, dni, name, lastname, email, phoneNumber);
+        }
 
     }
 }
