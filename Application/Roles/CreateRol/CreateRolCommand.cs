@@ -1,13 +1,11 @@
 ﻿using Application.Abstractions.Messaging;
-using Domain.Students;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Students.SearchStudents
+namespace Application.Roles.CreateRol
 {
-    public sealed record SearchStudentCommand () :ICommand<Student?>;
-    
+    public record CreateRolCommand(string Description) : ICommand<Guid>;
 }

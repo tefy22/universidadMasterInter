@@ -1,4 +1,5 @@
 ﻿using Domain.Abstractions;
+using Domain.Roles;
 using Domain.Students;
 using Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -23,8 +24,9 @@ namespace Infrastructure
                 op.UseSqlServer(connectionString).UseSnakeCaseNamingConvention();
             });
 
+            services.AddScoped<IRolRepository, RolRepository>();
             services.AddScoped<IStudentRepository, StudentRepository>();
-            
+
             services.AddScoped<IUnitOfWork>(sp => sp.GetRequiredService<ApplicationDbContext>());
 
             return services;
