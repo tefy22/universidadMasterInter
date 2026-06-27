@@ -27,3 +27,13 @@ postman request PUT 'https://localhost:7154/api/Students/cadab4ce-40f8-4ec2-88ce
   "email": "sa.ortega19@gmail.com",
   "phoneNumber": "3132656399"
 }'
+
+# Roles
+postman request 'https://localhost:7154/api/roles'
+postman request POST 'https://localhost:7154/api/roles' \
+  --header 'Content-Type: application/json' \
+  --body '{
+  "description": "Theacher"
+}'
+postman request 'https://localhost:7154/api/roles/9d5c100a-8d26-4374-8376-c0386ac82dfe'
+postman request DELETE 'https://localhost:7154/api/roles/368a2d03-6891-4688-a14b-ebce79f10c4a'
