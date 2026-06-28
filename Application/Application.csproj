@@ -16,11 +16,4 @@
     <ProjectReference Include="..\Domain\Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Teachers\CreateTeacher\" />
-    <Folder Include="Teachers\DeleteTeacher\" />
-    <Folder Include="Teachers\UpdateTeacher\" />
-    <Folder Include="Teachers\SearchTeacher\" />
-  </ItemGroup>
-
 </Project>

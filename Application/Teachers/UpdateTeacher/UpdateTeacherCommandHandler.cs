@@ -1,28 +1,28 @@
 ﻿using Application.Abstractions.Messaging;
 using Domain.Abstractions;
-using Domain.Students;
+using Domain.Teachers;
+using Domain.Theachers;
 using Domain.ValueObjects;
-using MediatR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Students.UpdateStudent
+namespace Application.Teachers.UpdateTeacher
 {
-    internal sealed class UpdateStudentCommandHandler : ICommandHandler<UpdateStudentCommand, Guid>
+    internal sealed class UpdateTeacherCommandHandler : ICommandHandler<UpdateTeacherCommand, Guid>
     {
-        private readonly IStudentRepository _studentRepository;
+        private readonly ITeacherRepository _teacherRepository;
         private readonly IUnitOfWork _unitOfWork;
 
-        public UpdateStudentCommandHandler(IStudentRepository studentRepository, IUnitOfWork unitOfWork)
+        public UpdateTeacherCommandHandler(ITeacherRepository teacherRepository, IUnitOfWork unitOfWork)
         {
-            _studentRepository = studentRepository;
+            _teacherRepository = teacherRepository;
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<Result<Guid>> Handle(UpdateStudentCommand request, CancellationToken cancellationToken)
+        public async Task<Result<Guid>> Handle(UpdateTeacherCommand request, CancellationToken cancellationToken)
         {
             try
             {
@@ -50,32 +50,31 @@ namespace Application.Students.UpdateStudent
                 if (phoneNumber.IsFailure)
                     return Result.Failure<Guid>(phoneNumber.Error);
 
-                var exist = await _studentRepository.GetByIdAsync(request.id, cancellationToken);
+                var exist = await _teacherRepository.GetByIdAsync(request.id, cancellationToken);
 
-                var existEmail = await _studentRepository.GetByEmailByIdAsync(request.id, email.Value.Value, cancellationToken);
+                var existEmail = await _teacherRepository.GetByEmailByIdAsync(request.id, email.Value.Value, cancellationToken);
                 if (existEmail is not null)
-                    return Result.Failure<Guid>(StudentErrors.ExistsEmail);
+                    return Result.Failure<Guid>(TeacherErrors.ExistsEmail);
 
-                var dniExits  =DNI.Create(exist.DNId.Value);
+                var dniExits = DNI.Create(exist.DNId.Value);
                 var emailExits = Email.Create(exist.Email.Value);
 
-                var studentResult = Student.Update(request.id, dniExits.Value, name.Value, lastname.Value, emailExits.Value, phoneNumber.Value);
+                var teacherResult = Teacher.Update(request.id, dniExits.Value, name.Value, lastname.Value, emailExits.Value, phoneNumber.Value);
+                if (teacherResult.IsFailure)
+                    return Result.Failure<Guid>(teacherResult.Error);
 
-                if (studentResult.IsFailure)
-                    return Result.Failure<Guid>(studentResult.Error);
-
-                var updateResult = await _studentRepository.Update(studentResult.Value);
+                var updateResult = await _teacherRepository.Update(teacherResult.Value);
                 if (updateResult.IsFailure)
                     return Result.Failure<Guid>(updateResult.Error);
 
                 await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-                return Result.Success(studentResult.Value.Id);
+                return Result.Success(teacherResult.Value.Id);
 
             }
             catch (Exception)
             {
-                return Result.Failure<Guid>(StudentErrors.UpdateError);
+                return Result.Failure<Guid>(TeacherErrors.UpdateError);
             }
         }
     }

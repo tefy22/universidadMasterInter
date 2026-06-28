@@ -17,8 +17,12 @@ namespace Domain.Theachers
         public PhoneNumber PhoneNumber { get; private set; }
         public DateTime? CreatedAt { get; private set; }
 
-        private Teacher(Guid id, DNI dni, Name name, LastName lastName,
-            Email email, PhoneNumber phoneNumber) : base(id)
+        private Teacher()
+        {
+            
+        }
+
+        private Teacher(Guid id, DNI dni, Name name, LastName lastName, Email email, PhoneNumber phoneNumber) : base(id)
         {
             DNId = dni; 
             Name = name;

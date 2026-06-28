@@ -1,13 +1,11 @@
 ﻿using Application.Abstractions.Messaging;
-using Domain.Students;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Students.SearchStudent
+namespace Application.Subjects.CreateSubject
 {
-    public record SearchByEmailStudentQuery (string email) : ICommand<StudentDto>;
-    
+    public record CreateSubjectCommand(string name, int credits, Guid idTeacher): ICommand<Guid>;
 }

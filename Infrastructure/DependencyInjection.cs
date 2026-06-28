@@ -1,6 +1,8 @@
 ﻿using Domain.Abstractions;
 using Domain.Roles;
 using Domain.Students;
+using Domain.Subjects;
+using Domain.Teachers;
 using Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -26,6 +28,8 @@ namespace Infrastructure
 
             services.AddScoped<IRolRepository, RolRepository>();
             services.AddScoped<IStudentRepository, StudentRepository>();
+            services.AddScoped<ITeacherRepository, TeacherRepository>();
+            services.AddScoped<ISubjectRepository, SubjectRepository>();
 
             services.AddScoped<IUnitOfWork>(sp => sp.GetRequiredService<ApplicationDbContext>());
 

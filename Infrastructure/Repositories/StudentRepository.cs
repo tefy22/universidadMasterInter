@@ -16,8 +16,6 @@ namespace Infrastructure.Repositories
         {
         }
 
-
-
         public async Task<Result> Delete(Guid id)
         {
             if (id == Guid.Empty)
@@ -47,16 +45,14 @@ namespace Infrastructure.Repositories
 
         public async Task<Student?> GetByDniAsync(int dni, CancellationToken cancellationToken = default)
         {
-            //Validamos y creamos el Value Object usando tu método de dominio
             var dniResult = DNI.Create(dni);
-
             if (dniResult.IsFailure)
                 return null;
 
-            DNI dniObjeto = dniResult.Value;
+            DNI dniObject = dniResult.Value;
 
             //Comparamos Objeto 'DNI' contra Objeto 'DNI' EF Core lo traduce a SQL.
-            return await _dbContext.Set<Student>().FirstOrDefaultAsync(s => s.DNId == dniObjeto, cancellationToken);        
+            return await _dbContext.Set<Student>().FirstOrDefaultAsync(s => s.DNId == dniObject, cancellationToken);        
         }
 
         public async Task<Student?> GetByEmailAsync(string email, CancellationToken cancellationToken = default)
