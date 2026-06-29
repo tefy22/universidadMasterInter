@@ -9,5 +9,5 @@ using System.Windows.Input;
 
 namespace Application.Subjects.SearchSubject
 {
-    public record SearchSubjectByIdQuery(Guid id):ICommand<SubjectDto>;
+    public record SearchByIdSubjectQuery(Guid id):ICommand<SubjectDto>;
 }

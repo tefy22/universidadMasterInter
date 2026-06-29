@@ -6,5 +6,5 @@ using System.Threading.Tasks;
 
 namespace Domain.Subjects
 {
-    public record SubjectDto(string name, int creditos, Guid idTeacher, int estado);
+    public record SubjectDto(Guid id, string name, int credits, Guid idTeacher, int estado);
 }

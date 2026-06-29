@@ -1,8 +1,13 @@
-﻿using Application.Subjects.CreateSubject;
+﻿using Application.Students.DeleteStudent;
+using Application.Students.UpdateStudent;
+using Application.Subjects.CreateSubject;
+using Application.Subjects.DeleteSubject;
 using Application.Subjects.SearchSubject;
+using Application.Subjects.UpdateSubject;
 using Domain.Abstractions;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading;
 
 namespace UniversityMaster.Controllers
 {
@@ -17,23 +22,36 @@ namespace UniversityMaster.Controllers
             _sender = sender;
         }
 
-        //[HttpGet]
-        //public async Task<IActionResult> SearchTeachers(CancellationToken cancellationToken = default)
-        //{
-        //    var query = new SearchAllTeacherQuery();
-        //    var result = await _sender.Send(query, cancellationToken);
-        //    if (result.IsFailure)
-        //        return BadRequest(result.Error);
+        [HttpGet("active")]
+        public async Task<IActionResult> SearchActiveStatus(CancellationToken cancellationToken = default)
+        {
+            var query = new SearchActiveSubjectQuery();
+            var result = await _sender.Send(query, cancellationToken);
+            if (result.IsFailure)
+                return BadRequest(result.Error);
 
-        //    var response = Result.Success(result.Value);
+            var response = Result.Success(result.Value);
 
-        //    return Ok(response);
-        //}
+            return Ok(response);
+        }
+
+        [HttpGet("all")]
+        public async Task<IActionResult> SearchSubject(CancellationToken cancellationToken = default)
+        {
+            var query = new SearchAllSubjectQuery();
+            var result = await _sender.Send(query, cancellationToken);
+            if (result.IsFailure)
+                return BadRequest(result.Error);
+
+            var response = Result.Success(result.Value);
+
+            return Ok(response);
+        }
 
         [HttpGet("{id:guid}", Name = "GetSubjectsById")]
         public async Task<IActionResult> SearchById(Guid id, CancellationToken cancellationToken = default)
         {
-            var query = new SearchSubjectByIdQuery(id);
+            var query = new SearchByIdSubjectQuery(id);
             var result = await _sender.Send(query, cancellationToken);
 
             if (result.IsFailure)
@@ -52,6 +70,30 @@ namespace UniversityMaster.Controllers
                 return BadRequest(result.Error);
 
             return CreatedAtRoute("GetSubjectsById", new { id = result.Value }, Result.Success(result.Value));
+        }
+
+        [HttpDelete("{id:guid}")]
+        public async Task<IActionResult> DeleteStudent(Guid id, CancellationToken cancellationToken)
+        {
+            var command = new DeleteSubjectCommand(id);
+            var result = await _sender.Send(command, cancellationToken);
+
+            if (result.IsFailure)
+                return BadRequest(result.Error);
+
+            return NoContent();
+        }
+
+        [HttpPatch("{id:guid}")]
+        public async Task<IActionResult> UpdateStudent(Guid id, [FromBody] UpdateSubjectCommand command, CancellationToken cancellationToken = default)
+        {
+            var request = new UpdateSubjectCommand(id, command.name, command.credits, command.idTeacher, command.estado);
+
+            var result = await _sender.Send(request, cancellationToken);
+            if (result.IsFailure)
+                return BadRequest(result.Error);
+
+            return Ok(Result.Success(result.Value));
         }
     }
 }

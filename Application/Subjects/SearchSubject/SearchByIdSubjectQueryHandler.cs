@@ -11,16 +11,16 @@ using System.Threading.Tasks;
 
 namespace Application.Subjects.SearchSubject
 {
-    internal sealed class SearchSubjectByIdQueryHandler : ICommandHandler<SearchSubjectByIdQuery, SubjectDto>
+    internal sealed class SearchByIdSubjectQueryHandler : ICommandHandler<SearchByIdSubjectQuery, SubjectDto>
     {
         private readonly ISubjectRepository _subjectRepository;
 
-        public SearchSubjectByIdQueryHandler(ISubjectRepository subjectRepository)
+        public SearchByIdSubjectQueryHandler(ISubjectRepository subjectRepository)
         {
             _subjectRepository = subjectRepository;
         }
 
-        public async Task<Result<SubjectDto>> Handle(SearchSubjectByIdQuery request, CancellationToken cancellationToken)
+        public async Task<Result<SubjectDto>> Handle(SearchByIdSubjectQuery request, CancellationToken cancellationToken)
         {
             try
             {
@@ -28,7 +28,7 @@ namespace Application.Subjects.SearchSubject
                 if (subject is null)
                     return Result.Failure<SubjectDto>(SubjectErrors.NotFound);
 
-                var dto = new SubjectDto(subject.Name.Value, subject.Credits.Value, subject.TheacherId, (int)subject.Status);
+                var dto = new SubjectDto(subject.Id, subject.Name.Value, subject.Credits.Value, subject.TheacherId, (int)subject.Status);
                 return Result.Success(dto);
             }
             catch (Exception)
