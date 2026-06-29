@@ -37,7 +37,6 @@ postman request POST 'https://localhost:7154/api/roles' \
 }'
 postman request 'https://localhost:7154/api/roles/9d5c100a-8d26-4374-8376-c0386ac82dfe'
 postman request DELETE 'https://localhost:7154/api/roles/368a2d03-6891-4688-a14b-ebce79f10c4a'
-
 # Teachers
 postman request 'https://localhost:7154/api/teachers'
 postman request POST 'https://localhost:7154/api/teachers' \
