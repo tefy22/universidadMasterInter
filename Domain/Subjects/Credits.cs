@@ -12,7 +12,7 @@ namespace Domain.Subjects
         public int Value { get; init; }
         private Credits(int value) => Value = value;
 
-        public static Credits Create(int value)
+        public static Result<Credits> Create(int value)
         {
             if (value != MinCredits)
                 throw new ApplicationException($"El valor de los creditos debe ser {MinCredits} por cada materia.");

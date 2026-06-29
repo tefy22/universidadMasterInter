@@ -15,26 +15,26 @@ namespace Domain.Subjects
         public Guid TheacherId { get; private set; }
         public StatusDetails Status { get; private set; } = StatusDetails.Active;
 
-        private Subject(Guid id, Name name, Credits credits, 
-            Guid theacherId, StatusDetails status) : base(id)
+        private Subject()
+        {
+            
+        }
+
+        private Subject(Guid id, Name name, Credits credits, Guid theacherId, StatusDetails status) : base(id)
         {
             Name = name;
             Credits = credits;
             TheacherId = theacherId;
             Status = status;
         }
-
-        /// <summary>
-        /// creacion de la materia, se asigna un nuevo guid para el id, y se asigna el estado activo por defecto
-        /// </summary>
-        /// <param name="name"></param>
-        /// <param name="credits"></param>
-        /// <param name="theacherId"></param>
-        /// <param name="status"></param>
-        /// <returns></returns>
-        public static Subject Create(Name name, Credits credits, Guid theacherId, StatusDetails status)
+        public static Result<Subject> Create(Name name, Credits credits, Guid theacherId)
         {
-            return new Subject(Guid.NewGuid(), name, credits, theacherId, status);
+            return new Subject(Guid.NewGuid(), name, credits, theacherId, StatusDetails.Active);
+        }
+
+        public static Result<Subject> Update(Guid id, Name name, Credits credits, Guid theacherId, StatusDetails status)
+        {
+            return new Subject(id, name, credits, theacherId, status);
         }
     }
 }

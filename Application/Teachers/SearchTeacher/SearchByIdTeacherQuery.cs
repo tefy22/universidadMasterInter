@@ -1,4 +1,5 @@
 ﻿using Application.Abstractions.Messaging;
+using Domain.Theachers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace Application.Students.CreateStudent
+namespace Application.Teachers.SearchTeacher
 {
-    public record CreateStudentCommand(int dni, string name, string lastname, string email, string phoneNumber) : ICommand<Guid>;
+    public record SearchByIdTeacherQuery(Guid id) : ICommand<TeacherDto>;
 }

@@ -92,9 +92,11 @@ namespace UniversityMaster.Controllers
         public async Task<IActionResult> UpdateStudent(Guid id, [FromBody] UpdateStudentCommand command, CancellationToken cancellationToken = default)
         {
             var request = new UpdateStudentCommand(id, command.dni, command.name, command.lastName, command.email, command.phoneNumber);
+
             var result = await _sender.Send(request, cancellationToken);
             if (result.IsFailure)
                 return BadRequest(result.Error);
+
             return Ok(Result.Success(result.Value));
         }
     }

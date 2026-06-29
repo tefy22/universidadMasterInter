@@ -4,6 +4,7 @@ using Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260627222652_CreateTeacherHome")]
+    partial class CreateTeacherHome
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -95,40 +98,6 @@ namespace Infrastructure.Migrations
                     b.ToTable("Student", (string)null);
                 });
 
-            modelBuilder.Entity("Domain.Subjects.Subject", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("id");
-
-                    b.Property<int>("Credits")
-                        .HasColumnType("int")
-                        .HasColumnName("credits");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)")
-                        .HasColumnName("name");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int")
-                        .HasColumnName("status");
-
-                    b.Property<Guid>("TheacherId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("theacher_id");
-
-                    b.HasKey("Id")
-                        .HasName("pk_subject");
-
-                    b.HasIndex("TheacherId")
-                        .HasDatabaseName("ix_subject_theacher_id");
-
-                    b.ToTable("Subject", (string)null);
-                });
-
             modelBuilder.Entity("Domain.Theachers.Teacher", b =>
                 {
                     b.Property<Guid>("Id")
@@ -181,16 +150,6 @@ namespace Infrastructure.Migrations
                         .HasDatabaseName("ix_teacher_email");
 
                     b.ToTable("Teacher", (string)null);
-                });
-
-            modelBuilder.Entity("Domain.Subjects.Subject", b =>
-                {
-                    b.HasOne("Domain.Theachers.Teacher", null)
-                        .WithMany()
-                        .HasForeignKey("TheacherId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired()
-                        .HasConstraintName("fk_subject_teacher_teacher_id");
                 });
 #pragma warning restore 612, 618
         }
